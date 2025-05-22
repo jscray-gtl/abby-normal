@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HlKu8wnz+vA=",
+  "dgSpecHash": "yBlf3d343jo=",
   "success": true,
-  "projectFilePath": "/Users/jscray/Documents/workspace/temp/JintTest/JintTest.csproj",
+  "projectFilePath": "/Users/jscray/Documents/workspace/abby-normal/JintTest.csproj",
   "expectedPackageFiles": [
     "/Users/jscray/.nuget/packages/acornima/1.1.1/acornima.1.1.1.nupkg.sha512",
     "/Users/jscray/.nuget/packages/jint/4.2.2/jint.4.2.2.nupkg.sha512",

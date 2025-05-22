@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JintTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a7868636c71805031948bf1a5420912e28ff68c")]
 [assembly: System.Reflection.AssemblyProductAttribute("JintTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JintTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

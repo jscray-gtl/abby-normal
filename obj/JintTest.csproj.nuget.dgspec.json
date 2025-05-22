@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jscray/Documents/workspace/temp/JintTest/JintTest.csproj": {}
+    "/Users/jscray/Documents/workspace/abby-normal/JintTest.csproj": {}
   },
   "projects": {
-    "/Users/jscray/Documents/workspace/temp/JintTest/JintTest.csproj": {
+    "/Users/jscray/Documents/workspace/abby-normal/JintTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jscray/Documents/workspace/temp/JintTest/JintTest.csproj",
+        "projectUniqueName": "/Users/jscray/Documents/workspace/abby-normal/JintTest.csproj",
         "projectName": "JintTest",
-        "projectPath": "/Users/jscray/Documents/workspace/temp/JintTest/JintTest.csproj",
+        "projectPath": "/Users/jscray/Documents/workspace/abby-normal/JintTest.csproj",
         "packagesPath": "/Users/jscray/.nuget/packages/",
-        "outputPath": "/Users/jscray/Documents/workspace/temp/JintTest/obj/",
+        "outputPath": "/Users/jscray/Documents/workspace/abby-normal/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/jscray/.nuget/NuGet/NuGet.Config"

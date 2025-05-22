@@ -84,6 +84,10 @@ public class HttpRequest
         }  
     }  
   
+    public void Send()
+    {
+        SendAsync().GetAwaiter().GetResult();
+    }
     public async Task SendAsync()  
     {  
         if (!string.IsNullOrEmpty(_authToken))  
@@ -311,7 +315,7 @@ class Program
             try    
             {    
                 var script = await File.ReadAllTextAsync("test.js");    
-                engine.Execute(script);    
+                engine.Execute(script);
             }    
             catch (Jint.Runtime.JavaScriptException ex)    
             {    

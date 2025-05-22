@@ -1,5 +1,6 @@
 README
 # abby-normal
+This repository provides a convenient way to test JavaScript code locally using C# and the Jint library. By leveraging Jint, a popular JavaScript interpreter for .NET, you can execute JavaScript code within your C# application, allowing for faster and more efficient local testing.
 
 ## README
 Installation Instructions for .NET 9 and Jint

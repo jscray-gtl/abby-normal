@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;    
 using System.Collections.Generic;    
 using Newtonsoft.Json;  
+using Newtonsoft.Json.Linq;  
   
 public enum ContentEncoding  
 {  
@@ -24,7 +25,7 @@ public class HttpRequest
     private string? _method;  
     private string? _authToken;  
     private string? _authScheme;  
-    private bool _throwExceptionOnFailed = true;  
+    private bool _throwExceptionOnFailed = false;  
     private TimeSpan _timeout = TimeSpan.FromMinutes(1);  
   
     public string? Url  
@@ -69,7 +70,9 @@ public class HttpRequest
   
     public HttpRequest()  
     {  
-        _httpClient = new HttpClient();  
+        _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("Default");
+        _httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("application/x-www-form-urlencoded");
     }  
   
     public void SetHeader(string name, string value)  
@@ -139,7 +142,10 @@ public class HttpRequest
   
             if (_throwExceptionOnFailed && !response.IsSuccessStatusCode)  
             {  
-                throw new HttpRequestException($"Request failed with status code {Status}");  
+                Console.WriteLine($"Request Failed!!!! to {_url}");
+                Console.WriteLine("Request Failed!!!!");
+
+                throw new HttpRequestException($"Request failed to {_url}, with status code {Status}");  
             }  
         }  
     }  
@@ -167,17 +173,19 @@ public class HttpRequest
         _method = "POST";  
     }  
   
+
     public void SetUrlFormEncodedContent(object content)  
     {  
         var keyValuePairs = new List<KeyValuePair<string, string>>();  
-        foreach (var property in content.GetType().GetProperties())  
+        var jObject = JObject.FromObject(content);  
+        foreach (var property in jObject.Properties())  
         {  
-            if (property.GetValue(content) != null)  
+            if (property.Value != null)  
             {  
-                keyValuePairs.Add(new KeyValuePair<string, string>(property.Name, property.GetValue(content).ToString() ?? string.Empty));  
+                keyValuePairs.Add(new KeyValuePair<string, string>(property.Name, property.Value.ToString()));  
             }  
         }  
-  
+    
         var formUrlEncodedContent = new FormUrlEncodedContent(keyValuePairs);  
         _httpContent = formUrlEncodedContent;  
         _method = "POST";  
@@ -231,7 +239,8 @@ public class MultipartFormDataRequest
   
     public MultipartFormDataRequest()  
     {  
-        _request = new HttpRequest();  
+        _request = new HttpRequest();
+        _request.SetHeader("Content-Type", "application/x-www-form-urlencoded");
     }  
   
     public string? Url  
@@ -278,19 +287,72 @@ public class MultipartFormDataRequest
         get { return _request.ResponseText; }  
     }  
 }  
-  
-public class Context  
-{  
-    public MultipartFormDataRequest CreateMultipartFormDataRequest()  
+    
+public class Transaction    
+{    
+    public Document[] Documents { get; set; }    
+}    
+    
+public class Document    
+{    
+    public ExportResult[] Exports { get; set; }    
+}    
+    
+public class ExportResult    
+{    
+    public string ExportFormat { get; set; }    
+    public string ToJson()    
+    {    
+        // Return stubbed JSON data  
+        return @"{""key"":""value""}";      
+    }    
+    public byte[] FileData { get; set; }    
+}    
+    
+public class ExportFormat    
+{    
+    public static string Json = "Json";    
+    public static string Pdf = "Pdf";    
+}  
+
+public class Context    
+{    
+    public Transaction Transaction { get; set; }    
+    // public ExportFormat ExportFormat { get; set; }    
+    public MultipartFormDataRequest CreateMultipartFormDataRequest()    
+    {    
+        return new MultipartFormDataRequest();    
+    }    
+    
+    public HttpRequest CreateHttpRequest()    
+    {    
+        return new HttpRequest();    
+    }
+    public Context()  
     {  
-        return new MultipartFormDataRequest();  
+        Transaction = new Transaction  
+        {  
+            Documents = new[]  
+            {  
+                new Document  
+                {  
+                    Exports = new[]  
+                    {  
+                        new ExportResult  
+                        {  
+                            ExportFormat = ExportFormat.Json  
+                        },  
+                        new ExportResult  
+                        {  
+                            ExportFormat = ExportFormat.Pdf,  
+                            FileData = new byte[] { 1, 2, 3 }  
+                        }  
+                    }  
+                }
+            }  
+        };  
     }  
-  
-    public HttpRequest CreateHttpRequest()  
-    {  
-        return new HttpRequest();  
-    }  
-}   
+}    
   
 class Program    
 {    
@@ -304,10 +366,12 @@ class Program
             warn = new Action<object>(Console.WriteLine)    
         });    
     
-        var context = new Context();    
+        var context = new Context();  
+        var exportFormat = new ExportFormat();
         if (context != null)    
         {    
             engine.SetValue("Context", context);    
+            engine.SetValue("ExportFormat", exportFormat);    
         }    
     
         if (File.Exists("test.js"))    
